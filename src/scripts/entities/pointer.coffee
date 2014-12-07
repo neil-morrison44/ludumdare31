@@ -98,7 +98,7 @@ module.exports = class Pointer
       if @targetButton.text is "Slaughter"
         scoreCounter.increase 2
 
-      audioEffects.hitPointer.play()
+      audioEffects.playHit()
 
       bullet.status = "destroyed"
 
