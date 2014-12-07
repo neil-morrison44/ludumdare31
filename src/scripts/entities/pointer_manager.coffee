@@ -24,9 +24,9 @@ module.exports = class PointerManager
     @pointers = (pointer for pointer in @pointers when pointer.status isnt "destroyed")
 
   testAll: (bulletManager) ->
-    bulletPositions = bulletManager.positionsForBullets()
+    bullets = bulletManager.bullets
 
-    pointer.testAgainst bulletPositions for pointer in @pointers
+    pointer.testAgainst bullets for pointer in @pointers
 
   renderAll: (canvasContext) ->
     canvasContext.save()

@@ -1,5 +1,7 @@
 tinyColor = require "tinyColor2"
-scoreCounter = require "./scoreCounter"
+scoreCounter = require "./score_counter"
+audioEffects = require "../util/audio_effects"
+particleManager = require "./particles_manager"
 
 lineDistance = ( point1, point2 ) ->
   xs = point2.x - point1.x
@@ -66,6 +68,8 @@ module.exports = class Pointer
       if @targetButton.text is "Slaughter"
         scoreCounter.decrease 1
 
+      audioEffects.click.play()
+
   render: (canvasContext) ->
     canvasContext.save()
     canvasContext.strokeStyle = "black"
@@ -82,7 +86,8 @@ module.exports = class Pointer
 
     canvasContext.restore()
 
-  testBullet: (position) ->
+  testBullet: (bullet) ->
+    position = bullet.position
     if (lineDistance @position, position) < 15
       @status = "destroyed"
 
@@ -93,9 +98,21 @@ module.exports = class Pointer
       if @targetButton.text is "Slaughter"
         scoreCounter.increase 2
 
+      audioEffects.hitPointer.play()
 
-  testAgainst: (bulletPositions) ->
-    @testBullet bulletPosition for bulletPosition in bulletPositions
+      bullet.status = "destroyed"
+
+      particleManager.createParticles {
+        count: 100
+        colour: @fillColour
+        position:
+          x: @position.x + 10
+          y: @position.y + 10
+      }
+
+
+  testAgainst: (bullets) ->
+    @testBullet bullet for bullet in bullets
 
   position:
     x:0

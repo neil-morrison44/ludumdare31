@@ -1,5 +1,6 @@
 currentKeys = require "../util/current_keys"
 bulletManager = require "./bullet_manager"
+audioEffects = require "../util/audio_effects"
 
 module.exports = class Player
   constructor: (options) ->
@@ -65,6 +66,7 @@ module.exports = class Player
     if currentKeys["<space>"]
       now = Date.now()
       if (@lastShot + 200) < now
+        audioEffects.playFire()
         @lastShot = now
         bulletManager.create {
           position: @position

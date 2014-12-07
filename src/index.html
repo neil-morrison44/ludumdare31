@@ -4,9 +4,21 @@
     <link href="css/main.css" rel="stylesheet" type="text/css"></link>
 	</head>
 	<body>
+    <div id="pregame" class="canvasCover">
+      <p id="trueStory">Based on a true story...</p>
+      <p id="controls">Use A, D and space to stop the red and orange pointers from reaching the buttons</p>
+    </div>
+    <div id="postgame" class="canvasCover">
+      <p>Your Score:</p>
+      <p id="score"></p>
+      <p>Refresh to try again</p>
+    </div>
     <canvas id="gameCanvas" width="600" height="500">
       
     </canvas>
+    <script src="./libs/audio.js"></script>
+    <script src="./libs/jsfx.js"></script>
+    <script src="./libs/jsfxlib.js"></script>
     <script src="js/main.js"></script>
 	</body>
 </html>

@@ -1,4 +1,5 @@
-scoreCounter = require "../entities/scoreCounter"
+scoreCounter = require "../entities/score_counter"
+timer = require "../util/timer"
 
 module.exports = class Frame
   renderScore: (canvasContext) ->
@@ -7,6 +8,14 @@ module.exports = class Frame
     canvasContext.font = "30px bold"
     canvasContext.fillText "score: #{scoreCounter.value}", 10, 30
     canvasContext.restore()
+
+  renderTimer: (canvasContext) ->
+    canvasContext.save()
+    canvasContext.fillStyle = "white"
+    canvasContext.font = "30px bold"
+    canvasContext.fillText "time: #{Math.round(timer.checkTimeLeft())}", 450, 30 
+    canvasContext.restore()
+
   renderBack: (canvasContext) ->
     canvasContext.save()
     width = canvasContext.canvas.width
@@ -15,6 +24,7 @@ module.exports = class Frame
     canvasContext.fillStyle = "#8BC97B"
     canvasContext.fillRect 0, 0, width, height
     @renderScore canvasContext
+    @renderTimer canvasContext
 
     canvasContext.beginPath()
     canvasContext.arc width/2, height/2, (height/2)-5, 0, 2*Math.PI

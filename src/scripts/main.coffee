@@ -8,6 +8,11 @@ PointerManager = require "./entities/pointer_manager"
 
 Button = require "./entities/button"
 
+timer = require "./util/timer"
+
+scoreCounter = require "./entities/score_counter"
+
+particleManager = require "./entities/particles_manager"
 
 canvas = document.getElementById "gameCanvas"
 canvasContext = canvas.getContext "2d"
@@ -18,7 +23,7 @@ height = null
 frame = new Frame
 background = new Background
 player = new Player({
-  canvasContext:canvasContext
+  canvasContext: canvasContext
   })
 
 goodButton = new Button({
@@ -49,6 +54,36 @@ slaughterButton = new Button({
   })
 
 pointerManager = null
+paused = false
+
+startAnimation = ->
+  trueStory = document.getElementById "trueStory"
+  controls = document.getElementById "controls"
+
+  trueStory.className = "fadeIn"
+
+  window.setTimeout ->
+    controls.className = "fadeIn"
+  , 1000
+
+  window.setTimeout ->
+    pregameCanvasCover = document.getElementById "pregame"
+    pregameCanvasCover.style.display = "none"
+
+    timer.start 60
+    timer.onFinish = ->
+      paused = true
+
+      postgameCanvasCover = document.getElementById "postgame"
+
+      postgameCanvasCover.className += " fadeIn"
+
+      score = document.getElementById "score"
+
+      score.innerText = "#{scoreCounter.value}"
+
+    start()
+  , 5000
 
 start = ->
   width = canvas.width
@@ -69,7 +104,8 @@ render = ->
   if Math.random() < 0.025
     pointerManager.createNewPointerForTarget()
 
-  window.requestAnimationFrame render
+  unless paused
+    window.requestAnimationFrame render
   canvasContext.clearRect 0, 0, width, height
 
   frame.renderBack canvasContext
@@ -85,6 +121,9 @@ render = ->
 
   pointerManager.testAll bulletManager
 
+  particleManager.updateAll()
+  particleManager.renderAll canvasContext
+  
   pointerManager.updateAll()
   pointerManager.renderAll canvasContext
 
@@ -92,4 +131,4 @@ render = ->
 
   frame.renderFront canvasContext
 
-start()
+startAnimation()
