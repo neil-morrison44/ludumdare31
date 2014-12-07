@@ -17,7 +17,7 @@ source       = require "vinyl-source-stream"
 paths =
   html : "./src/index.html"
   scripts: "src/scripts/**/*.coffee"
-  styles: ["src/styles/**/*.scss"]
+  styles: "src/styles/**/*.scss"
   images: "src/images/**/*"
   vendorScripts: []
   infrastructureScripts: []
@@ -77,7 +77,7 @@ gulp.task "styles", ["clean:sass"], ->
   gulp.src paths.styles
     .pipe sourcemaps.init()
       .pipe sass()
-      .pipe concat "main.all.css"
+      .pipe concat "main.css"
       .pipe pleeease
         autoprefixer: {browsers: ["last 2 versions", "ios 7"]}
         opacity: false
@@ -94,7 +94,7 @@ gulp.task "images", ["clean:images"], ->
 
 gulp.task "watch", ->
   gulp.watch paths.html, ["html"]
-  gulp.watch paths.styles, ["styles", "html"]
+  gulp.watch paths.styles, ["styles"]
   gulp.watch paths.images, ["images"]
 
 gulp.task "default", [
