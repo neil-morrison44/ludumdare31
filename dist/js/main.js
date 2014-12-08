@@ -2185,11 +2185,13 @@ vkey = require("vkey");
 currentKeys = {};
 
 window.addEventListener("keydown", function(event) {
-  return currentKeys[vkey[event.keyCode]] = true;
+  currentKeys[vkey[event.keyCode]] = true;
+  return event.preventDefault();
 });
 
 window.addEventListener("keyup", function(event) {
-  return delete currentKeys[vkey[event.keyCode]];
+  delete currentKeys[vkey[event.keyCode]];
+  return event.preventDefault();
 });
 
 module.exports = currentKeys;

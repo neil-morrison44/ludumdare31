@@ -22,6 +22,7 @@ paths =
   vendorScripts: []
   infrastructureScripts: []
   images: "src/images/**/*"
+  libs: "src/libs/**/*"
 
 buildDir = "dist"
 
@@ -57,7 +58,7 @@ gulp.task "browserify", ["clean:scripts"], ->
   bundler = browserify(
     entries    : ["./src/scripts/main.coffee"]
     extensions : [".coffee"]
-    debug      : true
+    debug      : false
   )
   bundle = ->
     bundler
@@ -72,6 +73,10 @@ gulp.task "browserify", ["clean:scripts"], ->
 gulp.task "html", ->
   gulp.src paths.html
     .pipe gulp.dest "#{buildDir}"
+
+gulp.task "libs", ->
+  gulp.src paths.libs
+    .pipe gulp.dest "#{buildDir}/libs"
 
 gulp.task "styles", ["clean:sass"], ->
   gulp.src paths.styles
@@ -99,6 +104,6 @@ gulp.task "watch", ->
 
 gulp.task "default", [
   "html", "browserify",
-  "styles", "images"]
+  "styles", "images", "libs"]
 
 gulp.task "watchers", ["watchify", "watch"]
